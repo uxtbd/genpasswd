@@ -51,7 +51,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install -y libsodium pkgconf gmake
+          pkg install -y libsodium pkgconf gmake gcc
         run: |
           gmake LLVM=${{ matrix.llvm_env }}
 
@@ -68,6 +68,6 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg_add libsodium pkgconf gmake llvm
+          pkg_add libsodium pkgconfig gmake llvm gcc
         run: |
           gmake LLVM=${{ matrix.llvm_env }}
