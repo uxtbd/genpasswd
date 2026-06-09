@@ -1,0 +1,73 @@
+name: Build for multiple targets
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  linux-native:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        llvm_env: [ "0", "1" ]
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libsodium-dev pkg-config build-essential clang
+
+    - name: Build
+      run: make LLVM=${{ matrix.llvm_env }}
+
+  alpine-linux:
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    strategy:
+      matrix:
+        llvm_env: [ "0", "1" ]
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Install dependencies
+      run: apk add --no-cache alpine-sdk libsodium-dev pkg-config clang
+
+    - name: Build
+      run: make LLVM=${{ matrix.llvm_env }}
+
+  freebsd:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        llvm_env: [ "0", "1" ]
+    steps:
+    - uses: actions/checkout@v6
+    
+    - name: Build in FreeBSD VM
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          pkg install -y libsodium pkgconf gmake clang
+        run: |
+          gmake LLVM=${{ matrix.llvm_env }}
+
+  openbsd:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        llvm_env: [ "0", "1" ]
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Build in OpenBSD VM
+      uses: vmactions/openbsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          pkg_add libsodium pkgconf gmake llvm
+        run: |
+          gmake LLVM=${{ matrix.llvm_env }}
