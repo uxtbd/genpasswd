@@ -1,0 +1,21 @@
+[
+	{
+		"label": "Make Build",
+		"command": "make",
+		"args": [],
+	},
+	{
+		"label": "Make Build (LLVM)",
+		"command": "make",
+		"args": ["LLVM=1"],
+	},
+	{
+		"label": "Make Clean",
+		"command": "make",
+		"args": ["clean"],
+	},
+	{
+		"label": "Run",
+		"command": "./genpasswd",
+	},
+]

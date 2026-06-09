@@ -1,0 +1,13 @@
+[
+	{
+		"label": "Debug",
+		"build": {
+			"command": "make",
+			"args": [],
+			"cwd": "$ZED_WORKTREE_ROOT",
+		},
+		"program": "$ZED_WORKTREE_ROOT/genpasswd",
+		"request": "launch",
+		"adapter": "GDB",
+	},
+]

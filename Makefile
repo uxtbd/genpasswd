@@ -21,7 +21,7 @@ OBJ_DIR := obj
 SRCS    := $(wildcard $(SRC_DIR)/*.c)
 OBJS    := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-USERFLAGS := -march=native
+USERFLAGS := -march=native -g3 -ggdb3
 
 LIBSODIUM_CFLAGS := $(shell pkg-config --cflags libsodium)
 LIBSODIUM_LIBS   := $(shell pkg-config --libs libsodium)
