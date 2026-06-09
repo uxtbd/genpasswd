@@ -1,2 +1,2 @@
 # genpasswd
-Secure password generator
+Secure password generator using libsodium
