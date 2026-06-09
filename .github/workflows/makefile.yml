@@ -33,7 +33,7 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Install dependencies
-      run: apk add --no-cache alpine-sdk libsodium-dev pkg-config clang
+      run: apk add --no-cache alpine-sdk libsodium-dev pkgconf clang
 
     - name: Build
       run: make LLVM=${{ matrix.llvm_env }}
@@ -51,7 +51,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install -y libsodium pkgconf gmake clang
+          pkg install -y libsodium pkgconf gmake
         run: |
           gmake LLVM=${{ matrix.llvm_env }}
 
