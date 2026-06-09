@@ -30,7 +30,7 @@ CFLAGS := -Wall -Werror -Wextra -Wpedantic -O2 -fPIE $(USERFLAGS)
 LDFLAGS := -pie -Wl,-z,relro,-z,now $(LIBSODIUM_LIBS)
 
 ifeq ($(DETECTED_COMPILER),clang)
-    CFLAGS := $(CFLAGS) -fsanitize=safe-stack -fstack-protector-strong $(LIBSODIUM_CFLAGS)
+    CFLAGS := $(CFLAGS) -fstack-protector-strong $(LIBSODIUM_CFLAGS)
 else ifeq ($(DETECTED_COMPILER),gcc)
     CFLAGS := $(CFLAGS) -fhardened -fstack-protector-strong --param=ssp-buffer-size=4 $(LIBSODIUM_CFLAGS)
 else
