@@ -26,7 +26,7 @@ OBJ_DIR := obj
 SRCS    := $(wildcard $(SRC_DIR)/*.c)
 OBJS    := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-USERFLAGS := -march=native
+USERFLAGS := -march=generic
 
 LIBSODIUM_CFLAGS := $(shell pkg-config --cflags libsodium 2>/dev/null || echo "")
 LIBSODIUM_LIBS   := $(shell pkg-config --libs libsodium 2>/dev/null || echo "-lsodium")
@@ -54,7 +54,7 @@ LDFLAGS += -pie -Wl,-z,relro,-z,now $(LIBSODIUM_LIBS)
 ifeq ($(DETECTED_COMPILER),clang)
     CFLAGS := $(CFLAGS) -fstack-protector-strong $(LIBSODIUM_CFLAGS)
 else ifeq ($(DETECTED_COMPILER),gcc)
-    CFLAGS := $(CFLAGS) -fhardened -fstack-protector-strong --param=ssp-buffer-size=4 $(LIBSODIUM_CFLAGS)
+    CFLAGS := $(CFLAGS) -fstack-protector-strong --param=ssp-buffer-size=4 $(LIBSODIUM_CFLAGS)
 else
     CFLAGS := $(CFLAGS) $(LIBSODIUM_CFLAGS)
 endif
