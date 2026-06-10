@@ -68,7 +68,7 @@ jobs:
         with:
           usesh: true
           prepare: |
-            pkg install -y libsodium pkgconf gmake gcc clang
+            pkg install -y libsodium pkgconf gmake gcc llvm
           run: |
             gmake LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}
 
