@@ -1,3 +1,8 @@
+DEBUG    ?= 0
+COVERAGE ?= 0
+LTO      ?= 1
+LLVM     ?= 0
+
 ifeq ($(LLVM),1)
 CC := clang
 else
@@ -21,13 +26,30 @@ OBJ_DIR := obj
 SRCS    := $(wildcard $(SRC_DIR)/*.c)
 OBJS    := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-USERFLAGS := -march=native -g3 -ggdb3
+USERFLAGS := -march=native
 
-LIBSODIUM_CFLAGS := $(shell pkg-config --cflags libsodium)
-LIBSODIUM_LIBS   := $(shell pkg-config --libs libsodium)
+LIBSODIUM_CFLAGS := $(shell pkg-config --cflags libsodium 2>/dev/null || echo "")
+LIBSODIUM_LIBS   := $(shell pkg-config --libs libsodium 2>/dev/null || echo "-lsodium")
 
-CFLAGS := -Wall -Werror -Wextra -Wpedantic -O2 -fPIE $(USERFLAGS)
-LDFLAGS := -pie -Wl,-z,relro,-z,now $(LIBSODIUM_LIBS)
+ifeq ($(DEBUG),1)
+    OPT_FLAGS := -O0 -g3 -ggdb3
+    override LTO := 0
+else
+    OPT_FLAGS := -O2
+endif
+
+ifeq ($(LTO),1)
+    OPT_FLAGS += -flto
+    LDFLAGS   += -flto
+endif
+
+ifeq ($(COVERAGE),1)
+    OPT_FLAGS += --coverage
+    LDFLAGS   += --coverage
+endif
+
+CFLAGS := -Wall -Werror -Wextra -Wpedantic -fPIE $(OPT_FLAGS) $(USERFLAGS)
+LDFLAGS += -pie -Wl,-z,relro,-z,now $(LIBSODIUM_LIBS)
 
 ifeq ($(DETECTED_COMPILER),clang)
     CFLAGS := $(CFLAGS) -fstack-protector-strong $(LIBSODIUM_CFLAGS)
@@ -49,6 +71,6 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+	rm -rf $(OBJ_DIR) $(TARGET) $(SRC_DIR)/*.gcda $(SRC_DIR)/*.gcno *.gcda *.gcno
 
 .PHONY: all clean

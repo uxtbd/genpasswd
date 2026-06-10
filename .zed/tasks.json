@@ -1,21 +1,42 @@
 [
 	{
-		"label": "Make Build",
-		"command": "make",
-		"args": [],
-	},
-	{
-		"label": "Make Build (LLVM)",
-		"command": "make",
-		"args": ["LLVM=1"],
-	},
-	{
 		"label": "Make Clean",
 		"command": "make",
 		"args": ["clean"],
 	},
 	{
-		"label": "Run",
+		"label": "Build: Production (GCC)",
+		"command": "bear -- make",
+		"args": ["clean", "all"],
+	},
+	{
+		"label": "Build: Production (LLVM)",
+		"command": "bear -- make",
+		"args": ["clean", "all", "LLVM=1"],
+	},
+	{
+		"label": "Build: Debug (GCC)",
+		"command": "bear -- make",
+		"args": ["clean", "all", "DEBUG=1"],
+	},
+	{
+		"label": "Build: Debug (LLVM)",
+		"command": "bear -- make",
+		"args": ["clean", "all", "LLVM=1", "DEBUG=1"],
+	},
+	{
+		"label": "Build: Coverage (GCC)",
+		"command": "bear -- make",
+		"args": ["clean", "all", "COVERAGE=1"],
+	},
+	{
+		"label": "Build: Coverage (LLVM)",
+		"command": "bear -- make",
+		"args": ["clean", "all", "LLVM=1", "COVERAGE=1"],
+	},
+	{
+		"label": "Run Binary",
 		"command": "./genpasswd",
+		"args": [],
 	},
 ]

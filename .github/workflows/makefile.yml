@@ -8,10 +8,16 @@ on:
 
 jobs:
   linux-native:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm64]
         llvm_env: ["0", "1"]
+        debug_env: ["0", "1"]
+        coverage_env: ["0", "1"]
+        exclude:
+          - debug_env: "1"
+            coverage_env: "1"
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
 
@@ -21,14 +27,20 @@ jobs:
           sudo apt-get install -y libsodium-dev pkg-config build-essential clang
 
       - name: Build
-        run: make LLVM=${{ matrix.llvm_env }}
+        run: make LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}
 
   alpine-linux:
-    runs-on: ubuntu-latest
-    container: alpine:latest
     strategy:
       matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm64]
         llvm_env: ["0", "1"]
+        debug_env: ["0", "1"]
+        coverage_env: ["0", "1"]
+        exclude:
+          - debug_env: "1"
+            coverage_env: "1"
+    runs-on: ${{ matrix.os }}
+    container: alpine:latest
     steps:
       - uses: actions/checkout@v6
 
@@ -36,13 +48,18 @@ jobs:
         run: apk add --no-cache alpine-sdk libsodium-dev pkgconf clang
 
       - name: Build
-        run: make LLVM=${{ matrix.llvm_env }}
+        run: make LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}
 
   freebsd:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         llvm_env: ["0", "1"]
+        debug_env: ["0", "1"]
+        coverage_env: ["0", "1"]
+        exclude:
+          - debug_env: "1"
+            coverage_env: "1"
     steps:
       - uses: actions/checkout@v6
 
@@ -51,15 +68,20 @@ jobs:
         with:
           usesh: true
           prepare: |
-            pkg install -y libsodium pkgconf gmake gcc
+            pkg install -y libsodium pkgconf gmake gcc clang
           run: |
-            gmake LLVM=${{ matrix.llvm_env }}
+            gmake LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}
 
   openbsd:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         llvm_env: ["1"]
+        debug_env: ["0", "1"]
+        coverage_env: ["0", "1"]
+        exclude:
+          - debug_env: "1"
+            coverage_env: "1"
     steps:
       - uses: actions/checkout@v6
 
@@ -68,6 +90,6 @@ jobs:
         with:
           usesh: true
           prepare: |
-            pkg_add libsodium gmake
+            pkg_add libsodium gmake llvm
           run: |
-            gmake LLVM=${{ matrix.llvm_env }}
+            gmake LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}

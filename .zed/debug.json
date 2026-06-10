@@ -1,9 +1,20 @@
 [
 	{
-		"label": "Debug",
+		"label": "Debug (GCC)",
 		"build": {
 			"command": "make",
-			"args": [],
+			"args": ["clean", "all", "DEBUG=1"],
+			"cwd": "$ZED_WORKTREE_ROOT",
+		},
+		"program": "$ZED_WORKTREE_ROOT/genpasswd",
+		"request": "launch",
+		"adapter": "GDB",
+	},
+	{
+		"label": "Debug (LLVM)",
+		"build": {
+			"command": "make",
+			"args": ["clean", "all", "LLVM=1", "DEBUG=1"],
 			"cwd": "$ZED_WORKTREE_ROOT",
 		},
 		"program": "$ZED_WORKTREE_ROOT/genpasswd",
