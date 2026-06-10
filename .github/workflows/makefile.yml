@@ -39,6 +39,7 @@ jobs:
         exclude:
           - debug_env: "1"
             coverage_env: "1"
+          - os: ubuntu-24.04-arm
     runs-on: ${{ matrix.os }}
     container: alpine:latest
     steps:
