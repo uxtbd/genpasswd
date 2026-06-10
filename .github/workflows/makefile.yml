@@ -45,7 +45,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install dependencies
-        run: apk add --no-cache alpine-sdk libsodium-dev pkgconf clang
+        run: apk add --no-cache alpine-sdk libsodium-dev pkgconf clang compiler-rt
 
       - name: Build
         run: make LLVM=${{ matrix.llvm_env }} DEBUG=${{ matrix.debug_env }} COVERAGE=${{ matrix.coverage_env }}

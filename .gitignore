@@ -57,3 +57,4 @@ dkms.conf
 obj/
 genpasswd
 compile_commands.json
+.cache
