@@ -10,7 +10,7 @@ jobs:
   linux-native:
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm64]
+        os: [ubuntu-latest, ubuntu-24.04-arm]
         llvm_env: ["0", "1"]
         debug_env: ["0", "1"]
         coverage_env: ["0", "1"]
@@ -32,7 +32,7 @@ jobs:
   alpine-linux:
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm64]
+        os: [ubuntu-latest, ubuntu-24.04-arm]
         llvm_env: ["0", "1"]
         debug_env: ["0", "1"]
         coverage_env: ["0", "1"]
