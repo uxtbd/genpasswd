@@ -26,7 +26,7 @@ OBJ_DIR := obj
 SRCS    := $(wildcard $(SRC_DIR)/*.c)
 OBJS    := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-USERFLAGS := -march=generic
+USERFLAGS :=
 
 LIBSODIUM_CFLAGS := $(shell pkg-config --cflags libsodium 2>/dev/null || echo "")
 LIBSODIUM_LIBS   := $(shell pkg-config --libs libsodium 2>/dev/null || echo "-lsodium")
